@@ -1,0 +1,139 @@
+spring:
+  application:
+    name: changelens
+
+  profiles:
+    active: local
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/changelens
+    username: changelens
+    password: changelens
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations:
+      - classpath:db/migration
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+        acks: all
+        enable.idempotence: true
+        delivery.timeout.ms: 120000
+        request.timeout.ms: 30000
+        retries: 10
+
+    consumer:
+      group-id: changelens-processor
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: io.changelens
+        spring.json.use.type.headers: false
+      isolation-level: read_committed
+
+    listener:
+      ack-mode: record
+      concurrency: 3
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2s
+
+  cache:
+    type: redis
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - metrics
+
+  endpoint:
+    health:
+      show-details: always
+
+  health:
+    redis:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    io.changelens: DEBUG
+    org.springframework.kafka: INFO
+    org.hibernate.SQL: INFO
+
+changelens:
+  enabled: true
+
+  application:
+    name: ${spring.application.name}
+    version: 0.1.0-SNAPSHOT
+    environment: local
+
+  audit:
+    annotations: true
+    entities: true
+
+  outbox:
+    enabled: true
+    polling:
+      fixed-delay: 1000
+      batch-size: 100
+
+  kafka:
+    topics:
+      audit-events: changelens.audit-events
+      audit-dlq: changelens.audit-events.dlq
+
+  processing:
+    consumer:
+      concurrency: 3
+    retry:
+      max-attempts: 3
+      initial-delay: 1000
+      multiplier: 2.0
+
+  masking:
+    enabled: true
+
+  context:
+    actor: true
+    request: true
+    correlation: true
+
+  rate-limit:
+    enabled: true
+    requests-per-minute: 60
+
+  cache:
+    enabled: true
+    timeline-ttl: 30s
