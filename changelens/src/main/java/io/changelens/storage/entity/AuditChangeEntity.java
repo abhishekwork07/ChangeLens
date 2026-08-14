@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,6 +13,7 @@ import org.hibernate.type.SqlTypes;
 @Setter
 @Builder
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "audit_change")
 public class AuditChangeEntity {
 

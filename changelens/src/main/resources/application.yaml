@@ -105,9 +105,12 @@ changelens:
 
   outbox:
     enabled: true
-    polling:
-      fixed-delay: 1000
+    publisher:
+      interval: 1000ms
       batch-size: 100
+      recovery:
+        interval: 30000ms
+        processing-timeout: 5m
 
   kafka:
     topics:

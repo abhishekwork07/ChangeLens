@@ -1,7 +1,8 @@
 package io.changelens.core.enums;
 
 public enum OutboxEventStatusType {
-    PUBLISHED,
     PENDING,
+    PROCESSING,
+    PUBLISHED,
     FAILED
 }

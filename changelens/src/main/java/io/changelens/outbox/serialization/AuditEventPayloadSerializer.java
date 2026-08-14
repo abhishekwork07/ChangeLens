@@ -1,25 +1,26 @@
 package io.changelens.outbox.serialization;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.changelens.core.domain.audit.AuditEvent;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Map;
 
 @Component
 public class AuditEventPayloadSerializer {
 
-    private final ObjectMapper objectMapper;
+    private final JsonMapper jsonMapper;
 
-    public AuditEventPayloadSerializer(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public AuditEventPayloadSerializer(JsonMapper jsonMapper) {
+        this.jsonMapper = jsonMapper;
     }
 
     public Map<String, Object> serialize(AuditEvent event) {
-        return objectMapper.convertValue(
-                event,
-                new TypeReference<>() {}
-        );
+        return jsonMapper.convertValue(event, Map.class);
+    }
+
+    public String serializeToString(AuditEvent event) {
+        return jsonMapper.writeValueAsString(event);
     }
 }
