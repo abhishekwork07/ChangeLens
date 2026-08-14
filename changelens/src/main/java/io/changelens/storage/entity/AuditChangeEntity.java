@@ -32,7 +32,7 @@ public class AuditChangeEntity {
     @Column(length = 512)
     private String displayName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     @Enumerated(EnumType.STRING)
     private ChangeType changeType;
 

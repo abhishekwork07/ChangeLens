@@ -30,7 +30,7 @@ public class AuditEventEntity {
     @Column(length = 64)
     private String tenantId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     @Enumerated(EnumType.STRING)
     private AuditEventType eventType;
 
@@ -40,7 +40,7 @@ public class AuditEventEntity {
     @Column(nullable = false, length = 128)
     private String action;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     @Enumerated(EnumType.STRING)
     private ActorType actorType = ActorType.UNKNOWN;
 
@@ -77,6 +77,7 @@ public class AuditEventEntity {
     @Column(length = 64)
     private String correlationId;
 
+    @Column(length = 64)
     private String traceId;
 
     @Column(length = 64)

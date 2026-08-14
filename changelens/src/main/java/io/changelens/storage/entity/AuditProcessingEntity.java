@@ -21,7 +21,7 @@ public class AuditProcessingEntity {
     @Id
     private UUID eventId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     @Enumerated(EnumType.STRING)
     private AuditStatusType status;
 
