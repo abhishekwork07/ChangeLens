@@ -1,5 +1,6 @@
 package io.changelens.processing.service;
 
+import io.changelens.cache.ProcessedEventCache;
 import io.changelens.core.domain.audit.AuditEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,13 @@ import java.util.UUID;
 public class AuditProcessingService {
 
     private final AuditProcessingStatusService statusService;
+    private final ProcessedEventCache processedEventCache;
 
-    @Transactional
     public void process(AuditEvent event) {
         statusService.markProcessed(event.eventId());
+        processedEventCache.put(event.eventId());
     }
 
-    @Transactional
     public void markFailed(UUID eventId, String error) {
         statusService.markFailed(eventId, error);
     }

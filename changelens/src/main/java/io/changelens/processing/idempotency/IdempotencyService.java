@@ -1,5 +1,6 @@
 package io.changelens.processing.idempotency;
 
+import io.changelens.cache.ProcessedEventCache;
 import io.changelens.processing.ProcessingClaimResult;
 import io.changelens.processing.service.AuditProcessingException;
 import io.changelens.storage.entity.AuditProcessingEntity;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class IdempotencyService {
 
     private final AuditProcessingRepository auditProcessingRepository;
+    private final ProcessedEventCache processedEventCache;
 
     @Value("${changelens.processing.retry.max-attempts:3}")
     private int maxAttempts;
@@ -28,6 +30,11 @@ public class IdempotencyService {
 
     @Transactional
     public ProcessingClaimResult tryClaim(UUID eventId) {
+
+        // faster redis lookup for already processed events
+        if (processedEventCache.contains(eventId)) {
+            return ProcessingClaimResult.ALREADY_PROCESSED;
+        }
 
         Optional<AuditProcessingEntity> existing =
                 auditProcessingRepository.findById(eventId);
@@ -39,8 +46,10 @@ public class IdempotencyService {
         AuditProcessingEntity processing = existing.get();
 
         return switch (processing.getStatus()) {
-            case PROCESSED ->
-                    ProcessingClaimResult.ALREADY_PROCESSED;
+            case PROCESSED -> {
+                processedEventCache.put(eventId);
+                yield ProcessingClaimResult.ALREADY_PROCESSED;
+            }
 
             case PROCESSING ->
                     handleProcessingState(processing);
