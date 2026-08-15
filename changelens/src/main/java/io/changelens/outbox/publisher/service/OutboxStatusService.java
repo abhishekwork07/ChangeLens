@@ -1,5 +1,6 @@
-package io.changelens.outbox.publisher;
+package io.changelens.outbox.publisher.service;
 
+import io.changelens.outbox.publisher.OutboxStateTransitionException;
 import io.changelens.outbox.repository.OutboxEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

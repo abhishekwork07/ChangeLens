@@ -116,10 +116,13 @@ changelens:
     topics:
       audit-events: changelens.audit-events
       audit-dlq: changelens.audit-events.dlq
+    consumer:
+      group-id: GROUP A
 
   processing:
     consumer:
       concurrency: 3
+    processing-timeout: 5m
     retry:
       max-attempts: 3
       initial-delay: 1000

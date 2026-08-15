@@ -112,16 +112,13 @@ CREATE TABLE audit_dlq (
     status VARCHAR(32) NOT NULL,
     attempts INTEGER NOT NULL,
 
-    payload JSONB NOT NULL,
+    payload TEXT NOT NULL,
 
     error_message VARCHAR(2048) NOT NULL,
 
     failed_at TIMESTAMPTZ NOT NULL,
     resolved_at TIMESTAMPTZ,
 
-    CONSTRAINT fk_audit_dlq_event
-        FOREIGN KEY (event_id)
-        REFERENCES audit_event(event_id),
     CONSTRAINT chk_audit_dlq_attempts
         CHECK (attempts > 0)
 );

@@ -3,12 +3,9 @@ package io.changelens.storage.entity;
 import io.changelens.core.enums.DlqStatusType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -31,9 +28,8 @@ public class AuditDlqEntity {
     @Column(nullable = false)
     private int attempts;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "payload", columnDefinition = "jsonb", nullable = false)
-    private Map<String, Object> payload;
+    @Column(name = "payload", columnDefinition = "TEXT", nullable = false)
+    private String payload;
 
     @Column(nullable = false, length = 2048)
     private String errorMessage;

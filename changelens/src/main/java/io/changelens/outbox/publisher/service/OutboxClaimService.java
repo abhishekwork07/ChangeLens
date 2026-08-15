@@ -1,4 +1,4 @@
-package io.changelens.outbox.publisher;
+package io.changelens.outbox.publisher.service;
 
 import io.changelens.core.enums.OutboxEventStatusType;
 import io.changelens.outbox.entity.OutboxEventEntity;

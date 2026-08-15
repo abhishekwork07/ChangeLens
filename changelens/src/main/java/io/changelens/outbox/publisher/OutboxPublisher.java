@@ -2,6 +2,8 @@ package io.changelens.outbox.publisher;
 
 import io.changelens.outbox.entity.OutboxEventEntity;
 import io.changelens.outbox.kafka.KafkaEventProducer;
+import io.changelens.outbox.publisher.service.OutboxClaimService;
+import io.changelens.outbox.publisher.service.OutboxStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

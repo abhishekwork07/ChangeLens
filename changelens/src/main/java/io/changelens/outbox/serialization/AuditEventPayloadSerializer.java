@@ -1,6 +1,5 @@
 package io.changelens.outbox.serialization;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.changelens.core.domain.audit.AuditEvent;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.json.JsonMapper;

@@ -1,4 +1,4 @@
-package io.changelens.outbox.publisher;
+package io.changelens.outbox.publisher.service;
 
 import io.changelens.outbox.repository.OutboxEventRepository;
 import lombok.RequiredArgsConstructor;

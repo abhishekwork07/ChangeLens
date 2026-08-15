@@ -3,7 +3,7 @@ package io.changelens.outbox;
 import io.changelens.core.domain.audit.AuditEventType;
 import io.changelens.core.enums.OutboxEventStatusType;
 import io.changelens.outbox.entity.OutboxEventEntity;
-import io.changelens.outbox.publisher.OutboxRecoveryService;
+import io.changelens.outbox.publisher.service.OutboxRecoveryService;
 import io.changelens.outbox.repository.OutboxEventRepository;
 import io.changelens.support.IntegrationTestContainers;
 import org.junit.jupiter.api.BeforeEach;
