@@ -60,6 +60,7 @@ spring:
       host: localhost
       port: 6379
       timeout: 2s
+      processed-event-ttl: 24h
 
   cache:
     type: redis
