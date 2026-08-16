@@ -36,22 +36,22 @@ audit event lifecycle.
 
 ``` mermaid
 flowchart LR
-    APP[Business Application]
-    SDK[ChangeLens SDK]
-    OUTBOX[Transactional Outbox]
-    SCHED[Outbox Publishing Scheduler]
-    KAFKA[Kafka]
-    PROCESSOR[Audit Event Processor]
-    STORE[Audit Store]
-    DLQ[Retry / DLQ]
+    APP["Business Application"]
+    SDK["ChangeLens SDK"]
+    OUTBOX["Transactional Outbox"]
+    SCHED["Outbox Publishing Scheduler"]
+    KAFKA["Kafka"]
+    PROCESSOR["Audit Event Processor"]
+    STORE["Audit Store"]
+    DLQ["Retry / DLQ"]
 
-    APP -->|@Audit / Entity Changes| SDK
-    SDK -->|AuditEvent| OUTBOX
+    APP -->|"@Audit / Entity Changes"| SDK
+    SDK -->|"AuditEvent"| OUTBOX
     OUTBOX --> SCHED
-    SCHED -->|publish| KAFKA
+    SCHED -->|"Publish"| KAFKA
     KAFKA --> PROCESSOR
-    PROCESSOR -->|processed| STORE
-    PROCESSOR -->|failure| DLQ
+    PROCESSOR -->|"Processed"| STORE
+    PROCESSOR -->|"Failure"| DLQ
 ```
 
 ### Responsibilities
@@ -256,11 +256,18 @@ Stores audit events before asynchronous Kafka publication.
 
 ``` mermaid
 flowchart LR
-    METHOD[createCustomer()] --> AUDIT[@Audit CREATE / CUSTOMER]
-    AUDIT --> EVENT[AuditEvent]
-    EVENT --> OUTBOX[Outbox]
-    OUTBOX --> KAFKA[Kafka]
-    KAFKA --> STORE[Audit Store]
+    METHOD["createCustomer()"]
+    AUDIT["Audit: CREATE / CUSTOMER"]
+    EVENT["AuditEvent"]
+    OUTBOX["Transactional Outbox"]
+    KAFKA["Kafka"]
+    STORE["Audit Store"]
+
+    METHOD --> AUDIT
+    AUDIT --> EVENT
+    EVENT --> OUTBOX
+    OUTBOX --> KAFKA
+    KAFKA --> STORE
 ```
 
 A specific application method explicitly declares its audit intent.
@@ -269,10 +276,16 @@ A specific application method explicitly declares its audit intent.
 
 ``` mermaid
 flowchart LR
-    CLASS[DemoCustomerService] --> CONFIG[@Audit UPDATE / CUSTOMER]
-    CONFIG --> METHODS[Service Operations]
-    METHODS --> EVENT[AuditEvent]
-    EVENT --> PIPELINE[Audit Pipeline]
+    CLASS["DemoCustomerService"]
+    CONFIG["Audit: UPDATE / CUSTOMER"]
+    METHODS["Service Operations"]
+    EVENT["AuditEvent"]
+    PIPELINE["Audit Pipeline"]
+
+    CLASS --> CONFIG
+    CONFIG --> METHODS
+    METHODS --> EVENT
+    EVENT --> PIPELINE
 ```
 
 A service can define reusable audit configuration rather than repeating
