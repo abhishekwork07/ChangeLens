@@ -50,7 +50,7 @@ public class AuditIngestionService {
             auditChangeRepository.saveAll(auditChanges);
         }
 
-        OutboxEventEntity outboxEvent = outboxEventFactory.create(event);
-        outboxEventRepository.save(outboxEvent);
+//        OutboxEventEntity outboxEvent = outboxEventFactory.create(event);
+//        outboxEventRepository.save(outboxEvent);
     }
 }

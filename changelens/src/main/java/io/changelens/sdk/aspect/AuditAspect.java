@@ -35,6 +35,50 @@ public class AuditAspect {
     private void auditedService() {
     }
 
+//    @Around("auditedMethod() || auditedService()")
+//    public Object audit(
+//            ProceedingJoinPoint joinPoint) throws Throwable {
+//
+//        Method method =
+//                ((MethodSignature) joinPoint.getSignature())
+//                        .getMethod();
+//
+//        Class<?> targetClass = AopUtils.getTargetClass(
+//                        joinPoint.getTarget());
+//
+//        Audit audit =
+//                annotationResolver.resolve(
+//                        method,
+//                        targetClass
+//                );
+//
+//        /*
+//         * The pointcut matched either the method or class,
+//         * so an annotation should normally be present.
+//         */
+//        if (audit == null) {
+//            return joinPoint.proceed();
+//        }
+//
+//        Object result = joinPoint.proceed();
+//
+//        AuditCaptureContext captureContext =
+//                new AuditCaptureContext(
+//                        audit,
+//                        resolveSource(method),
+//                        method,
+//                        joinPoint.getTarget(),
+//                        joinPoint.getArgs(),
+//                        result,
+//                        List.of()
+//                );
+//
+//        AuditEvent auditEvent = auditEventFactory.create(captureContext);
+//        auditEventPublisher.publish(auditEvent);
+//
+//        return result;
+//    }
+
     @Around("auditedMethod() || auditedService()")
     public Object audit(
             ProceedingJoinPoint joinPoint) throws Throwable {
@@ -43,8 +87,12 @@ public class AuditAspect {
                 ((MethodSignature) joinPoint.getSignature())
                         .getMethod();
 
-        Class<?> targetClass = AopUtils.getTargetClass(
-                        joinPoint.getTarget());
+        Class<?> targetClass =
+                AopUtils.getTargetClass(joinPoint.getTarget());
+
+        System.out.println("\n========== AUDIT ASPECT ==========");
+        System.out.println("Method = " + method);
+        System.out.println("Target class = " + targetClass);
 
         Audit audit =
                 annotationResolver.resolve(
@@ -52,15 +100,18 @@ public class AuditAspect {
                         targetClass
                 );
 
-        /*
-         * The pointcut matched either the method or class,
-         * so an annotation should normally be present.
-         */
+        System.out.println("Resolved Audit = " + audit);
+
         if (audit == null) {
+            System.out.println("AUDIT ANNOTATION NOT RESOLVED");
+            System.out.println("=================================\n");
             return joinPoint.proceed();
         }
 
         Object result = joinPoint.proceed();
+
+        System.out.println("Method executed successfully");
+        System.out.println("Result = " + result);
 
         AuditCaptureContext captureContext =
                 new AuditCaptureContext(
@@ -73,8 +124,20 @@ public class AuditAspect {
                         List.of()
                 );
 
-        AuditEvent auditEvent = auditEventFactory.create(captureContext);
+        System.out.println("Creating AuditEvent...");
+
+        AuditEvent auditEvent =
+                auditEventFactory.create(captureContext);
+
+        System.out.println("AuditEvent = " + auditEvent);
+        System.out.println("Event ID = " + auditEvent.eventId());
+
+        System.out.println("Publishing AuditEvent...");
+
         auditEventPublisher.publish(auditEvent);
+
+        System.out.println("AuditEvent published");
+        System.out.println("=================================\n");
 
         return result;
     }

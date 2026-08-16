@@ -4,7 +4,6 @@ import io.changelens.cache.ProcessedEventCache;
 import io.changelens.core.domain.audit.AuditEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -16,7 +15,7 @@ public class AuditProcessingService {
     private final ProcessedEventCache processedEventCache;
 
     public void process(AuditEvent event) {
-        statusService.markProcessed(event.eventId());
+        statusService.markProcessed(event);
         processedEventCache.put(event.eventId());
     }
 
