@@ -3,6 +3,7 @@ package io.changelens.consumer;
 import io.changelens.core.enums.DlqStatusType;
 import io.changelens.storage.entity.AuditDlqEntity;
 import io.changelens.storage.repository.AuditDlqRepository;
+import io.changelens.support.IntegrationTestContainers;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.test.context.EmbeddedKafka;
@@ -31,6 +33,7 @@ import static org.awaitility.Awaitility.await;
         partitions = 1,
         topics = "audit-events"
 )
+@Import(IntegrationTestContainers.class)
 class MalformedJsonDlqIntegrationTest {
 
     private static final String TOPIC = "audit-events";

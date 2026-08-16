@@ -16,7 +16,7 @@ import java.util.Map;
 public class KafkaConsumerConfig {
 
     @Bean
-    public ConsumerFactory<String, Object> consumerFactory(KafkaProperties kafkaProperties) {
+    public ConsumerFactory<String, String> consumerFactory(KafkaProperties kafkaProperties) {
 
         Map<String, Object> props =
                 kafkaProperties.buildConsumerProperties();
@@ -24,7 +24,7 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(
                 props,
                 new StringDeserializer(),
-                new JacksonJsonDeserializer<>()
+                new StringDeserializer()
         );
     }
 

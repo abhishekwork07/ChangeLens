@@ -4,11 +4,9 @@ import io.changelens.outbox.publisher.service.OutboxRecoveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-@Component
 @RequiredArgsConstructor
 public class OutboxPublishScheduler {
 

@@ -14,6 +14,7 @@ import io.changelens.storage.entity.AuditProcessingEntity;
 import io.changelens.storage.mapper.AuditEventMapper;
 import io.changelens.storage.repository.AuditEventRepository;
 import io.changelens.storage.repository.AuditProcessingRepository;
+import io.changelens.support.IntegrationTestContainers;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -41,6 +43,7 @@ import java.util.concurrent.Future;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Import(IntegrationTestContainers.class)
 class AuditEventProcessingIntegrationTest {
 
     /**

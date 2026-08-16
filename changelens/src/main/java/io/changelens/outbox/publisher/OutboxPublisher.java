@@ -5,12 +5,10 @@ import io.changelens.outbox.kafka.KafkaEventProducer;
 import io.changelens.outbox.publisher.service.OutboxClaimService;
 import io.changelens.outbox.publisher.service.OutboxStatusService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
 
-@Component
 @RequiredArgsConstructor
 public class OutboxPublisher {
 

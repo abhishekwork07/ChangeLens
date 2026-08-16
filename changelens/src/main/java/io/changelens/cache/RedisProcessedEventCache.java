@@ -4,12 +4,10 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.UUID;
 
-@Component
 @Slf4j
 public class RedisProcessedEventCache implements ProcessedEventCache {
 

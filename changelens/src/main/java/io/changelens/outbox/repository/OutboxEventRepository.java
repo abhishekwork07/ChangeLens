@@ -66,4 +66,6 @@ public interface OutboxEventRepository extends JpaRepository<OutboxEventEntity, 
             @Param("threshold") Instant threshold,
             @Param("updatedAt") Instant updatedAt
     );
+
+    OutboxEventEntity findByEventId(UUID eventId);
 }

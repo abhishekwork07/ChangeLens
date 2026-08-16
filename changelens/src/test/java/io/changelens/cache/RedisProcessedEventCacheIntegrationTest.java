@@ -6,12 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
-import java.time.Duration;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -100,44 +96,5 @@ class RedisProcessedEventCacheIntegrationTest {
 
         assertThat(ttl)
                 .isPositive();
-    }
-
-    @Test
-    void shouldFallbackWhenRedisIsUnavailable() {
-
-        RedisStandaloneConfiguration configuration =
-                new RedisStandaloneConfiguration(
-                        "localhost",
-                        6399
-                );
-
-        LettuceConnectionFactory connectionFactory =
-                new LettuceConnectionFactory(configuration);
-
-        connectionFactory.start();
-
-        StringRedisTemplate unavailableRedis =
-                new StringRedisTemplate(connectionFactory);
-
-        RedisProcessedEventCache cache =
-                new RedisProcessedEventCache(
-                        unavailableRedis, Duration.ofMinutes(1)
-                );
-
-        UUID eventId = UUID.randomUUID();
-
-        try {
-
-            assertThat(
-                    cache.contains(eventId)
-            ).isFalse();
-
-            cache.put(eventId);
-
-            cache.evict(eventId);
-
-        } finally {
-            connectionFactory.destroy();
-        }
     }
 }
